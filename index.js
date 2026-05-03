@@ -3,7 +3,9 @@ const cors = require("cors");
 const { Pool } = require("pg");
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "https://todo-frontend-dusky-psi.vercel.app"
+}));
 app.use(express.json());
 
 
