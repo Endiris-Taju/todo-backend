@@ -4,7 +4,7 @@ const { Pool } = require("pg");
 const app = express();
 
 app.use(cors({
-  origin: "https://todo-frontend-dusky-psi.vercel.app"
+  origin: "*"
 }));
 app.use(express.json());
 
