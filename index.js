@@ -18,32 +18,24 @@ const pool = new Pool({
 app.get("/todos", async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT 
-        id,
-        name,
-        "dueDate",
-        "startTime",
-        "endTime"
-      FROM todos
-      ORDER BY "dueDate", "startTime"
+      SELECT * FROM todos
     `);
 
     res.json(result.rows);
   } catch (err) {
-    console.error("DB ERROR:", err);
+    console.error("FULL ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 });
-
 // ADD task
 app.post("/todos", async (req, res) => {
   const { name, dueDate, startTime, endTime } = req.body;
 
   // convert to comparable format in DB query
- const result = await pool.query(
-  `SELECT * FROM todos WHERE "dueDate" = $1`,
-  [dueDate]
-);
+ //const result = await pool.query(
+ // `SELECT * FROM todos WHERE "dueDate" = $1`,
+  //[dueDate]
+//);
 
   const toMinutes = (t) => {
     const [h, m] = t.split(":").map(Number);
