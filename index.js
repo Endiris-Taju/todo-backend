@@ -21,17 +21,17 @@ app.get("/todos", async (req, res) => {
       SELECT 
         id,
         name,
-        duedate AS "dueDate",
-        starttime AS "startTime",
-        endtime AS "endTime"
+        "dueDate",
+        "startTime",
+        "endTime"
       FROM todos
-      ORDER BY duedate, starttime
+      ORDER BY "dueDate", "startTime"
     `);
 
     res.json(result.rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Server crashed" });
+    console.error("DB ERROR:", err);
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -40,10 +40,10 @@ app.post("/todos", async (req, res) => {
   const { name, dueDate, startTime, endTime } = req.body;
 
   // convert to comparable format in DB query
-  const result = await pool.query(
-    `SELECT * FROM todos WHERE duedate = $1`,
-    [dueDate]
-  );
+ const result = await pool.query(
+  `SELECT * FROM todos WHERE "dueDate" = $1`,
+  [dueDate]
+);
 
   const toMinutes = (t) => {
     const [h, m] = t.split(":").map(Number);
