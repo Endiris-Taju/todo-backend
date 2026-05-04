@@ -16,18 +16,23 @@ const pool = new Pool({
 
 // GET all tasks
 app.get("/todos", async (req, res) => {
-  const result = await pool.query(`
-    SELECT 
-      id,
-      name,
-      dueDate AS "dueDate",
-      startTime AS "startTime",
-      endTime AS "endTime"
-    FROM todos
-    ORDER BY dueDate, startTime
-  `);
+  try {
+    const result = await pool.query(`
+      SELECT 
+        id,
+        name,
+        duedate AS "dueDate",
+        starttime AS "startTime",
+        endtime AS "endTime"
+      FROM todos
+      ORDER BY duedate, starttime
+    `);
 
-  res.json(result.rows);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server crashed" });
+  }
 });
 
 // ADD task
@@ -36,7 +41,7 @@ app.post("/todos", async (req, res) => {
 
   // convert to comparable format in DB query
   const result = await pool.query(
-    `SELECT * FROM todos WHERE dueDate = $1`,
+    `SELECT * FROM todos WHERE duedate = $1`,
     [dueDate]
   );
 
