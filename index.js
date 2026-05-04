@@ -36,6 +36,9 @@ app.post("/todos", async (req, res) => {
  // `SELECT * FROM todos WHERE "dueDate" = $1`,
   //[dueDate]
 //);
+app.get("/", (req, res) => {
+  res.send("Todo API is running 🚀");
+});
 
   const toMinutes = (t) => {
     const [h, m] = t.split(":").map(Number);
